@@ -22,7 +22,7 @@
 			%n是换行符
         -->
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}-[%thread]-[%-5level]-[%logger{50}] - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}[%-5level][%thread][%logger{50}:%line] - %msg%n</pattern>
         </layout>
     </appender>
 
@@ -55,7 +55,7 @@
         </rollingPolicy>
         <!-- 日志输出格式： -->
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%-5level][%logger{50}:%line] - %msg%n</pattern>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5level][%thread][%logger{50}:%line] - %msg%n</pattern>
         </layout>
     </appender>
 

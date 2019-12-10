@@ -66,6 +66,9 @@
     </dependencies>
 
     <build>
+        <!-- 最终打成jar包的名称 -->
+        <finalName>study-springboot</finalName>
+        <!-- springboot maven打包插件 -->
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

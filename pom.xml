@@ -75,5 +75,16 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <resources>
+            <!-- 打包配置文件：把所有的*.properties都拿到classes外边conf的直接目录下 -->
+            <resource>
+                <targetPath>${project.build.directory}/conf</targetPath>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 </project>

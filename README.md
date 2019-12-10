@@ -21,6 +21,7 @@ SpringBoot学习，以spring-boot-starter-web场景启动器（Web项目）为�
 6. 整合日志：https://docs.spring.io/spring-boot/docs/2.2.2.RELEASE/reference/html/spring-boot-features.html#boot-features-logging
     - SpringBoot默认使用slf4j+logback
     - 自定义配置logback文件见classpath:config/logback.xml
+7. 部署，见file:./springboot-deploy.txt
 
 ## SpringBoot原理
 

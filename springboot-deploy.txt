@@ -1,0 +1,85 @@
+一、打包，见pom.xml
+
+二、部署
+1、目录树
+    /opt/springboot(可以任意指定，但下面的目录结构不可以！)
+        |--bin(公用脚本)
+            |--springboot.sh start|restart|stop cluster_name(${application.cluster})
+        |--app
+            |--cluster_name_x
+                |--conf
+                |--app_name.jar(${application.name}.jar)
+            |--cluster_name_y
+                |--conf
+                |--app_name.jar(${application.name}.jar)
+        |--log
+            |--cluster_name_x
+                |--app_name.log(${application.name}.log)
+            |--cluster_name_y
+                |--app_name.log(${application.name}.log)
+注：${xx}是application.properties中的属性
+2、将打包的服务jar包和conf文件夹copy到cluster_name目录下
+3、执行springboot.sh start|restart|stop cluster_name 启动|重启|关闭服务
+
+注：打包配置根据项目结构自行配置，只要满足上面的目录结构springboot.sh脚本正常执行即可，示例如下
+<build>
+    <resources>
+        <!-- 打包配置文件：把所有的*.properties都拿到classes外边conf的直接目录下 -->
+        <resource>
+            <targetPath>${project.build.directory}/conf</targetPath>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering>
+            <includes>
+                <include>**/*.properties</include>
+            </includes>
+        </resource>
+    </resources>
+
+    <plugins>
+        <!-- maven-jar-plugin插件用于将本服务打成jar包并配置MANIFEST.MF文件（记录服务依赖的所有jar包路径，供maven-dependency-plugin拷贝） -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <configuration>
+                <classesDirectory>${project.build.directory}/classes/</classesDirectory>
+                <outputDirectory>${project.build.directory}</outputDirectory>
+                <archive>
+                    <manifest>
+                        <!-- jar包的main类 -->
+                        <mainClass>com.alibaba.dubbo.container.Main</mainClass>
+                        <!-- 打包时MANIFEST.MF文件不记录的时间戳版本，一定要设置false，以免给部署带了麻烦 -->
+                        <useUniqueVersions>false</useUniqueVersions>
+                        <!-- 添加一个Class-Path元素到MANIFEST.MF文件，以及在Class-Path元素中包括所有依赖项：看打包后的MANIFEST.MF文件就明了了 -->
+                        <addClasspath>true</addClasspath>
+                        <!-- 服务依赖的jar包放在${outputDirectory}/lib目录下 -->
+                        <classpathPrefix>lib/</classpathPrefix>
+                    </manifest>
+                    <!-- 外部jar包的依赖也添加到MANIFEST.MF的classpath中 -->
+                    <manifestEntries>
+                        <Class-Path>.</Class-Path>
+                    </manifestEntries>
+                </archive>
+            </configuration>
+        </plugin>
+        <!--maven-dependency-plugin插件用于将maven-jar-plugin配置的依赖包拷贝到指定的位置-->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+                <execution>
+                    <id>copy-dependencies</id>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>copy-dependencies</goal>
+                    </goals>
+                    <configuration>
+                        <type>jar</type>
+                        <includeTypes>jar</includeTypes>
+                        <!-- 存放服务依赖的所有jar包copy的指定的目录下 -->
+                        <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>

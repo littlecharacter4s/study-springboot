@@ -36,9 +36,14 @@
             </exclusions>
         </dependency>
         <!-- spring-boot-starter-freemarker -->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-freemarker</artifactId>-->
+        <!--</dependency>-->
+        <!-- spring-boot-starter-thymeleaf -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-freemarker</artifactId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
         <!-- spring-boot-starter-jdbc -->
         <dependency>

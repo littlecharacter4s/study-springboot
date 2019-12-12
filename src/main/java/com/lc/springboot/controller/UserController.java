@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 @Controller
@@ -21,7 +23,9 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping("/main")
-    public ModelAndView showUser() {
+    public ModelAndView showUser(HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("x", "xxxxxxxx");
+        request.getSession().setAttribute("y", "yyyyyyyy");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("main");
         User user = userService.getUserInfo(1234567890L);

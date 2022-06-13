@@ -67,7 +67,7 @@ start() {
         exit 1
     fi
     mkdir -p $LOG_DIR
-    java $JAVA_OPTS -jar $APP_JAR > "$STDOUT_FILE" 2>&1 &
+    nohup java $JAVA_OPTS -jar $APP_JAR > "$STDOUT_FILE" 2>&1 &
     PID=`ps -ef | grep java | grep "$CLUSTER_NAME" | grep -v grep | awk '{print $2}'`
     if [ "$PID" == "" ]; then
         echo "$CLUSTER_NAME start fail"
